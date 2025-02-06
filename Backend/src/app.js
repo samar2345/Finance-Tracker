@@ -10,17 +10,17 @@ app.use(cors({
 }))
 app.use(express.json({limit:"16kb"}))
 app.use(express.urlencoded({extended:true,limit:"16kb"}))//extended object
-app.use(express.static("public"))//for storing pdfs, images, so that anyone can acces it???
+app.use(express.static("public"))//for storing pdfs, images, so that anyone can access it???
 app.use(cookieParser())//used to read and update cookies on the browser of user
 
 //routes import
-import userRouter from './routes/user.routes.js'
-import tweetRouter from './routes/tweet.routes.js'
-import playlistRouter from './routes/playlist.routes.js'
-import subscriptionRouter from './routes/subscription.routes.js'
-import likeRouter from './routes/like.routes.js'
-import commentRouter from './routes/comment.routes.js'
-import videoRouter from './routes/video.routes.js'
+// import userRouter from './routes/user.routes.js'
+// import tweetRouter from './routes/tweet.routes.js'
+// import playlistRouter from './routes/playlist.routes.js'
+// import subscriptionRouter from './routes/subscription.routes.js'
+// import likeRouter from './routes/like.routes.js'
+// import commentRouter from './routes/comment.routes.js'
+// import videoRouter from './routes/video.routes.js'
 
 
 //routes declaration
