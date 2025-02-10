@@ -1,6 +1,6 @@
 import mongoose,{Schema} from 'mongoose'
 
-const categoryMethodSchema= new Schema({
+const categorySchema= new Schema({
     user:{
         type:Schema.Types.ObjectId,
         ref:"User"
@@ -13,4 +13,4 @@ const categoryMethodSchema= new Schema({
        
 },{timestamps: true})
 
-export const CategoryMethod=mongoose.model(categoryMethodSchema)
+export const Category=mongoose.model(categorySchema)
