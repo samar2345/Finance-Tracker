@@ -32,4 +32,4 @@
         
     },{timestamps: true})
 
-    export const RecurringPayment=mongoose.model(recurringPaymentSchema)
+    export const RecurringPayment=mongoose.model("RecurringPayment",recurringPaymentSchema)

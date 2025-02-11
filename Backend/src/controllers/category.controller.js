@@ -57,7 +57,7 @@ const updateCategory = asyncHandler(async (req, res) => {
     res.status(200).json(new ApiResponse(200, category, "Category updated successfully"));
 });
 
-export const deleteCategory = asyncHandler(async (req, res) => {
+const deleteCategory = asyncHandler(async (req, res) => {
     const { id } = req.params;
 
     const category = await Category.findById(id);

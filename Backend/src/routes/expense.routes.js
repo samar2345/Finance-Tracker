@@ -1,6 +1,6 @@
 import {Router} from 'express'
-import { verifyJWT } from '../../../../VideoTube/src/middlewares/auth.middleware'
-import { createExpense, deleteExpense, getAllExpenses, getExpenseById, getExpensesByCategory, getExpensesByDateRange, getTotalExpenses, updateExpense, } from '../controllers/expense.controller'
+import { verifyJWT } from '../../../../VideoTube/src/middlewares/auth.middleware.js'
+import { createExpense, deleteExpense, getAllExpenses, getExpenseById, getExpensesByCategory, getExpensesByDateRange, getTotalExpenses, updateExpense, } from '../controllers/expense.controller.js'
 
 const router=Router()
 
@@ -11,3 +11,4 @@ router.route("/:expenseId").delete(deleteExpense).patch(updateExpense).get(getEx
 router.route(":/category/categoryId").get(getExpensesByCategory)
 router.route("/date-range").get(getExpensesByDateRange)
 router.route("/total").get(getTotalExpenses)
+export default router

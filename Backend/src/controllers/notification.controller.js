@@ -79,7 +79,7 @@ const updateNotification = asyncHandler(async (req, res) => {
  * @route PATCH /notifications/:notificationId/read
  * @access Private
  */
-const markAsRead = asyncHandler(async (req, res) => {
+const markNotificationAsRead = asyncHandler(async (req, res) => {
     const { notificationId } = req.params;
     const userId = req.user._id;
 
@@ -118,7 +118,7 @@ const deleteNotification = asyncHandler(async (req, res) => {
 // Not understood
 import cron from "node-cron";
 
-const cleanOldNotifications = async () => {
+const deleteOldNotifications = async () => {
     const cutoffDate = new Date();
     cutoffDate.setDate(cutoffDate.getDate() - 30); // 30 days ago
 
@@ -128,12 +128,12 @@ const cleanOldNotifications = async () => {
 };
 
 // Schedule cleanup to run every day at midnight
-cron.schedule("0 0 * * *", cleanOldNotifications);
+cron.schedule("0 0 * * *", deleteOldNotifications);
 
 
 export { deleteNotification };
 
-export { markAsRead };
+export { markNotificationAsRead };
 
 
 export { getNotificationById };
@@ -145,4 +145,5 @@ export { getNotifications };
 export { createNotification };
 
 export { updateNotification };
+export {deleteOldNotifications}
     

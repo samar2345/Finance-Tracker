@@ -13,4 +13,4 @@ const paymentMethodSchema= new Schema({
        
 },{timestamps: true})
 
-export const PaymentMethod=mongoose.model(paymentMethodSchema)
+export const PaymentMethod=mongoose.model("PaymentMethod",paymentMethodSchema)

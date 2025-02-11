@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { verifyJWT } from '../../../../VideoTube/src/middlewares/auth.middleware';
+import { verifyJWT } from '../../../../VideoTube/src/middlewares/auth.middleware.js';
 import {
     createNotification,
     getNotifications,
@@ -8,7 +8,7 @@ import {
     deleteNotification,
     markNotificationAsRead,
     deleteOldNotifications
-} from '../controllers/notification.controller';
+} from '../controllers/notification.controller.js';
 
 const router = Router();
 

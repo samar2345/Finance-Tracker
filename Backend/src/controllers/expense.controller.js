@@ -1,5 +1,5 @@
 import mongoose, {isValidObjectId} from "mongoose"
-import {Budget} from "../models/video.model.js"
+// import {Budget} from "../models/budget.model.js"
 import {User} from "../models/user.model.js"
 import { Expense } from "../models/expense.model.js"
 import {ApiError} from "../utils/ApiError.js"
@@ -26,7 +26,7 @@ const createExpense = asyncHandler(async (req, res) => {
         // Create a new expense
         const expense = new Expense({
             user: userId,
-            amount,
+            amount: Decimal128.fromString(req.body.amount.toString()),
             category,
             description,
             paymentMethod,
