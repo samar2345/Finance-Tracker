@@ -1,5 +1,5 @@
 import {Router} from 'express'
-import { verifyJWT } from '../../../../VideoTube/src/middlewares/auth.middleware.js'
+import { verifyJWT } from '../middlewares/auth.middleware.js'
 import { createExpense, deleteExpense, getAllExpenses, getExpenseById, getExpensesByCategory, getExpensesByDateRange, getTotalExpenses, updateExpense, } from '../controllers/expense.controller.js'
 
 const router=Router()

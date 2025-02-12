@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { verifyJWT } from "../../../../VideoTube/src/middlewares/auth.middleware.js";
+import { verifyJWT } from '../middlewares/auth.middleware.js'
 import {
     createBudget,
     getAllBudgets,
