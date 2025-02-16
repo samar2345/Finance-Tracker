@@ -15,7 +15,8 @@ const notificationSchema= new Schema({
     },
     type:{
         type:String,
-        required:true
+        required:true,
+        // enum: ["budget-alert", "expense-update", "reminder", "system", "payment", "goal-progress"],
     },
     
 },{timestamps: true})

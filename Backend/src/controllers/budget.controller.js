@@ -39,11 +39,11 @@ const getAllBudgets = asyncHandler(async (req, res) => {
 });
 
 const getBudgetById = asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { budgetId } = req.params;
     const userId = req.user._id;
 
     try {
-        const budget = await Budget.findOne({ _id: id, user: userId }).populate("category");
+        const budget = await Budget.findOne({ _id: budgetId, user: userId }).populate("category");
         if (!budget) {
             throw new ApiError(404, "Budget not found");
         }
@@ -54,13 +54,13 @@ const getBudgetById = asyncHandler(async (req, res) => {
 });
 
 const updateBudget = asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { budgetId } = req.params;
     const userId = req.user._id;
     const { monthlyLimit } = req.body;
 
     try {
         const budget = await Budget.findOneAndUpdate(
-            { _id: id, user: userId },
+            { _id: budgetId, user: userId },
             { monthlyLimit, alertThreshold: monthlyLimit * 0.8 },
             { new: true, runValidators: true }
         );
@@ -76,11 +76,11 @@ const updateBudget = asyncHandler(async (req, res) => {
 });
 
 const deleteBudget = asyncHandler(async (req, res) => {
-    const { id } = req.params;
+    const { budgetId } = req.params;
     const userId = req.user._id;
 
     try {
-        const budget = await Budget.findOneAndDelete({ _id: id, user: userId });
+        const budget = await Budget.findOneAndDelete({ _id: budgetId, user: userId });
         if (!budget) {
             throw new ApiError(404, "Budget not found");
         }
@@ -115,11 +115,11 @@ const getBudgetOverview = asyncHandler(async (req, res) => {
 });
 
 const getBudgetByCategory = asyncHandler(async (req, res) => {
-    const { categoryId } = req.params;
+    const { categoryName } = req.params;
     const userId = req.user._id;
 
     try {
-        const budget = await Budget.findOne({ user: userId, category: categoryId }).populate("category");
+        const budget = await Budget.findOne({ user: userId, category: categoryName }).populate("category");
 
         if (!budget) {
             throw new ApiError(404, "Budget not found for the given category");

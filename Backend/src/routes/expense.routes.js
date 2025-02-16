@@ -7,8 +7,9 @@ const router=Router()
 
 router.use(verifyJWT)
 router.route("/").post(createExpense).get(getAllExpenses)
+router.route("/total-expenses").get(getTotalExpenses)   
 router.route("/:expenseId").delete(deleteExpense).patch(updateExpense).get(getExpenseById)
-router.route(":/category/categoryId").get(getExpensesByCategory)
+router.route("/category/:categoryName").get(getExpensesByCategory)
 router.route("/date-range").get(getExpensesByDateRange)
-router.route("/total").get(getTotalExpenses)
+
 export default router

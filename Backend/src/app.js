@@ -1,6 +1,9 @@
 import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
+
+import './schedulers/notification.scheduler.js';
+
 origin:process.env.CORS_ORIGIN
 const app=express()
 

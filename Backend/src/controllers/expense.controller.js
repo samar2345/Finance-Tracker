@@ -9,9 +9,11 @@ import {asyncHandler} from "../utils/asyncHandler.js"
 
 const createExpense = asyncHandler(async (req, res) => {
     const { amount, category, description, paymentMethod, recurring } = req.body;
-
+    console.log("req.body : ", req.body);
     // Validate request body
-    if (!(amount && category && description && paymentMethod && recurring)) {
+    // if (!(amount && category && description && paymentMethod && recurring)) {
+        if (amount == null || category == null || description == null || paymentMethod == null || recurring == null)
+{
         throw new ApiError(400, "Amount, category, description, paymentMethod, and recurring fields are required");
     }
 
@@ -26,7 +28,7 @@ const createExpense = asyncHandler(async (req, res) => {
         // Create a new expense
         const expense = new Expense({
             user: userId,
-            amount: Decimal128.fromString(req.body.amount.toString()),
+            amount,
             category,
             description,
             paymentMethod,
@@ -42,67 +44,93 @@ const createExpense = asyncHandler(async (req, res) => {
             expense,
         });
     } catch (error) {
+        console.log("Error",error)
         throw new ApiError(500, "Failed to create expense");
+        
     }
 });
 
 const getAllExpenses = asyncHandler(async (req, res) => {
     const userId = req.user._id; // Assuming authentication middleware provides `req.user`
-    if(!userId){
-        throw new ApiError(401,"Unauthorized. user must be logged in to create a tweet")
+    
+    if (!userId) {
+        throw new ApiError(401, "Unauthorized. User must be logged in to view expenses.");
     }
+
     try {
-        const expenses = await Expense.find({ user: userId })
-            .populate("category")
-            .populate("paymentMethod")
-            .populate("recurring");
+        const expenses = await Expense.find({ user: userId });
 
         res.status(200).json({
             success: true,
-            // count: expenses.length,
             expenses,
         });
     } catch (error) {
-        // res.status(500).json({ success: false, message: "Failed to fetch expenses" });
-        throw new ApiError(500, "Failed to fetch expenses")
+        console.log("Error:", error);
+        throw new ApiError(500, "Failed to fetch expenses");
     }
 });
 
-const getExpenseById= asyncHandler(async(req,res)=>{
-    const id=req.params;
-    const userId=req.user._id;
-    if(!userId){
-        throw new ApiError(401,"Unauthorized. user must be logged in to create a tweet")
+
+// const getExpenseById= asyncHandler(async(req,res)=>{
+//     const expenseId=req.params.expenseId;
+//     const userId=req.user._id;
+//     if(!userId){
+//         throw new ApiError(401,"Unauthorized. user must be logged in to create a tweet")
+//     }
+//     console.log("getExpenseById function: ",expenseId)
+//     try {
+//     const expense = await Expense.findOne({ _id: expenseId, user: userId })
+//             // .populate("category")
+//             // .populate("paymentMethod")
+//             // .populate("recurring");
+
+//         if (!expense) {
+//             throw new ApiError(500, "No expense found")
+//         }
+
+//         res.status(200).json({ success: true, expense });
+//     } catch (error) {
+//         console.log("Error:", error);
+//         throw new ApiError(500, "Failed to fetch expense")
+//     }
+
+
+// })
+
+
+const getExpenseById = asyncHandler(async (req, res) => {
+    const { expenseId } = req.params;
+    const userId = req.user._id;
+
+    if (!mongoose.isValidObjectId(expenseId)) {
+        throw new ApiError(400, "Invalid expense ID format.");
     }
 
     try {
-    const expense = await Expense.findOne({ _id: id, user: userId })
-            .populate("category")
-            .populate("paymentMethod")
-            .populate("recurring");
+        const expense = await Expense.findOne({ _id: expenseId, user: userId });
 
         if (!expense) {
-            throw new ApiError(500, "No expense found")
+            throw new ApiError(404, "No expense found");
         }
 
         res.status(200).json({ success: true, expense });
     } catch (error) {
-        throw new ApiError(500, "Failed to fetch expense")
+        console.log("Error:", error);
+        throw new ApiError(500, "Failed to fetch expense");
     }
+});
 
-
-})
 
 const updateExpense =asyncHandler(async(req,res)=>{
     const userId=req.user._id
-    const {id}=req.params
+    const {expenseId}=req.params
 
-    if (!id) {
+    if (!expenseId) {
         throw new ApiError(404, "Expense not found or you are not authorized to delete it.");
     }
 
     const expense= await Expense.findOneAndUpdate({
-        _id:id,
+        _id:expenseId,
         user:userId
     },
     req.body,
@@ -119,36 +147,42 @@ const updateExpense =asyncHandler(async(req,res)=>{
 })
 
 const deleteExpense = asyncHandler(async (req, res) => {
-    const { id } = req.params;
-    const userId = req.user._id;
+    const { expenseId } = req.params;
+        const userId = req.user._id;
 
-    try {
-        const expense = await Expense.findOne({ _id: id, user: userId });
+        try {
+            const expense = await Expense.findOne({ _id: expenseId, user: userId });
 
-        if (!expense) {
-            return res.status(404).json({ success: false, message: "Expense not found" });
+            if (!expense) {
+                return res.status(404).json({ success: false, message: "Expense not found" });
+            }
+
+            await expense.deleteOne();
+
+            res.status(200).json({
+                success: true,
+                message: "Expense deleted successfully",
+            });
+        } catch (error) {
+            throw new ApiError(500, "Failed to delete expense")
         }
-
-        await expense.deleteOne();
-
-        res.status(200).json(200,expense, "Expense deleted successfully");
-    } catch (error) {
-        res.status(500).json(200,expense, "Failed to delete successfully");
-    }
-});
+    });
 
 const getExpensesByCategory = asyncHandler(async (req, res) => {
-    const { categoryId } = req.params;
+    const { categoryName } = req.params;
     const userId = req.user._id;
 
     try {
-        const expenses = await Expense.find({ user: userId, category: categoryId });
+        const expenses = await Expense.find({ user: userId, category: categoryName });
 
-        res.status(200).json(200,expenses,
-            // expenses.length
-            "Expense fetched successfully");
+        res.status(200).json({
+            success: true,
+            message: "Expenses fetched successfully",
+            expenses,
+            count: expenses.length
+        });
     } catch (error) {
-        res.status(500).json(500,expense, "Failed to fetch expenses by category");
+        throw new ApiError(500, "Failed to fetch expense by category")
     }
 });
 
@@ -171,23 +205,22 @@ const getExpensesByDateRange = asyncHandler(async (req, res) => {
     }
 });
 
-const getTotalExpenses=asyncHandler(async(req,res)=>{
-    const userId=req.user._id
+const getTotalExpenses = asyncHandler(async (req, res) => {
+    const userId = req.user._id;
     
     try {
-        const total=await Expense.aggregate([
-            {
-                $match:{user:userId}
-            },
-            { $group: { _id: null, totalAmount: { $sum: "$amount" } } }
-        ])
-        
+        const total = await Expense.aggregate([
+            { $match: { user: userId } }, // Filter by user
+            { $group: { _id: null, totalAmount: { $sum: "$amount" } } } // Sum amounts
+        ]);
+
         res.status(200).json({ success: true, totalAmount: total[0]?.totalAmount || 0 });
     } catch (error) {
+        console.error("Error calculating total expenses:", error);
         res.status(500).json({ success: false, message: "Failed to calculate total expenses" });
     }
-    
-})
+});
+
 
 
 

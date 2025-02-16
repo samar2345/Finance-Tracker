@@ -19,7 +19,7 @@ router.use(verifyJWT);
 router.route("/overview").get(getBudgetOverview);
 
 // Route to get budgets by category
-router.route("/category/:categoryId").get(getBudgetByCategory);
+router.route("/category/:categoryName").get(getBudgetByCategory);
 
 // Routes for creating and retrieving all budgets
 router.route("/")

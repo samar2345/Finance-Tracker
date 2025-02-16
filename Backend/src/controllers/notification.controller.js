@@ -7,7 +7,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
  * @desc Create a new notification
  * @route POST /notifications
  * @access Private
- */
+ */ 
 const createNotification = asyncHandler(async (req, res) => {
     const { message, status = "unread", type } = req.body;
     const userId = req.user._id; // Assuming user is authenticated

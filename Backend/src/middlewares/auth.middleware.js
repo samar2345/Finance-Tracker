@@ -48,14 +48,14 @@ export const verifyJWT=asyncHandler(async(req,_,next)=>{
         
     
         const decodedToken=jwt.verify(token,process.env.ACCESS_TOKEN_SECRET)
-        console.log("log from aut middleware");
-        console.log(decodedToken);
+        // console.log("log from aut middleware");
+        // console.log(decodedToken);
 
         const user= await User.findById(decodedToken?._id).select("-password -refreshToken").maxTimeMS(5000); // doubt??? _id??
 
-        if (mongoose.connection.readyState !== 1) {
-            return res.status(500).json({ message: "Database not connected" });
-        }
+        // if (mongoose.connection.readyState !== 1) {
+        //     return res.status(500).json({ message: "Database not connected" });
+        // }
     
         if(!user){
             //todo : discuss about frontend

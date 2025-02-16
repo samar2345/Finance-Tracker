@@ -10,13 +10,23 @@
               required:true,
               default:0
       },
-      category:{
-          type:Schema.Types.ObjectId,
-          ref:"Category"
-      },
+      // category:{
+      //     type:Schema.Types.ObjectId,
+      //     ref:"Category"
+      // },
+    //   category:{
+    //     type:String,
+    //     required:true
+    // },
+    category: {
+      type: String,
+      required: true,
+      lowercase: true, // Ensures case consistency
+    },
+    
       currentSpending:{
           type:Number,
-          required:true
+          default:0
       },
       alertThreshold:{
           type: Number,
