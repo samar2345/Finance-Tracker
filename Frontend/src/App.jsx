@@ -1,35 +1,78 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+
+//   import { AuthLayout, Login } from './components/index.js'
+
+ 
+
+  //   import { Routes,Route } from 'react-router-dom'
+
+// function App() {
+//   const [count, setCount] = useState(0)
+//   return (
+//     <>
+//       <Routes>
+//         <Route path="/" element={<Dashboard/>} />
+//         <Route path="/expenses" element={<Expenses/>} />
+//         <Route path="/user" element={<User/>} />
+//         <Route path="notifications/" element={<Notifications/>} />
+//         <Route path="budgets/" element={<Budgets/>} />
+//         {/* <Route path="/" element={</>} /> */}
+//         {/* <Route path="/" element={</>} /> */}
+//       </Routes>
+//     </>
+//   )
+// }
+
+import React from 'react';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import Expenses from './pages/Expenses';
+import Budgets from './pages/Budgets';
+import Notifications from './pages/Notifications';
+import User from './pages/User.jsx';
+import { AuthLayout } from './components/index.js';
+
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <Dashboard />,
+    },
+    {
+        path: "/expenses",
+        element: (
+            <AuthLayout authentication={false}>
+                <Expenses />
+            </AuthLayout>
+        ),
+    },
+    {
+        path: "/budgets",
+        element: (
+            <AuthLayout authentication={false}>
+                <Budgets />
+            </AuthLayout>
+        ),
+    },
+    {
+        path: "/notifications",
+        element: (
+            <AuthLayout authentication>
+                <Notifications />
+            </AuthLayout>
+        ),
+    },
+    {
+        path: "/users",
+        element: (
+            <AuthLayout authentication>
+                <User />
+            </AuthLayout>
+        ),
+    },
+]);
 
 function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    return <RouterProvider router={router} />;
 }
 
-export default App
+export default App;
+
